@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'irb'
+
+require_relative '../config/application'
+
+def reload!
+  Corona.reload!
+end
+
+Corona.mount_auto_loader!
+
+IRB.start

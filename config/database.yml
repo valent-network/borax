@@ -1,0 +1,16 @@
+development:
+  adapter: <%= ENV['DATABASE_ADAPTER'] %>
+  user: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] %>
+  database: <%= ENV['DATABASE_DATABASE'] %>
+  max_connections: <%= ENV['DATABASE_MAX_CONNECTIONS'] %>
+production:
+  adapter: <%= ENV['DATABASE_ADAPTER'] %>
+  user: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] %>
+  database: <%= ENV['DATABASE_DATABASE'] %>
+  max_connections: <%= ENV['DATABASE_MAX_CONNECTIONS'] %>
