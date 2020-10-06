@@ -13,9 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: actions/setup-ruby@v1
+    - uses: ruby/setup-ruby@master
       with:
-        ruby-version: 2.7
+        ruby-version: 2.7.2
 
     - name: Get TAG ref
       id: vars
