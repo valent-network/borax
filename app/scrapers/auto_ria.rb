@@ -5,7 +5,7 @@ module AutoRia
   LIMIT = 1000
   PROVIDER = 'auto.ria.com'
   # top=3 means for 3 days; 11 - day; 5 - month; 0 - all
-  START_URL = "https://s-ua.auto.ria.com/blocks_search_ajax/search/?category_id=1&bodystyle[0]=3&bodystyle[1]=5&bodystyle[3]=4&bodystyle[4]=2&bodystyle[5]=6&bodystyle[7]=7&bodystyle[8]=9&bodystyle[9]=307&bodystyle[12]=315&price_ot=&price_do=&currency=1&abroad=2&custom=-1&under_credit=2&confiscated_car=2&damage=1&auto_repairs=2&sellerType=0&matched_country=0&fuelRateFrom=&fuelRateTo=&fuelRatesType=city&engineVolumeFrom=&engineVolumeTo=&powerFrom=&powerTo=&power_name=1&raceFrom=&raceTo=&doorsFrom=&doorsTo=&seatsFrom=&seatsTo=&order_by=dates.created.desc&top=3&saledParam=2&countpage=#{CRAWLER_PER_PAGE}&class=&purpose=&q=&page=0"
+  START_URL = "https://auto.ria.com/blocks_search_ajax/search/?category_id=1&bodystyle[0]=3&bodystyle[1]=5&bodystyle[3]=4&bodystyle[4]=2&bodystyle[5]=6&bodystyle[7]=7&bodystyle[8]=9&bodystyle[9]=307&bodystyle[12]=315&price_ot=&price_do=&currency=1&abroad=2&custom=-1&under_credit=2&confiscated_car=2&damage=1&auto_repairs=2&sellerType=0&matched_country=0&fuelRateFrom=&fuelRateTo=&fuelRatesType=city&engineVolumeFrom=&engineVolumeTo=&powerFrom=&powerTo=&power_name=1&raceFrom=&raceTo=&doorsFrom=&doorsTo=&seatsFrom=&seatsTo=&order_by=dates.created.desc&top=3&saledParam=2&countpage=#{CRAWLER_PER_PAGE}&class=&purpose=&q=&page=0"
 
   def self.crawl!
     Crawler.new.call
