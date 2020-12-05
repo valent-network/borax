@@ -1,6 +1,6 @@
 class RecarioApi
   def update(data)
-    conn = Faraday.new("#{ENV['RECARIO_API_HOST']}/api/v1/provider_ads/update_ad", headers: {
+    conn = Faraday.new("http://#{ENV['RAILS_SERVICE_HOST']}/api/v1/provider_ads/update_ad", headers: {
                          Authorization: "Bearer #{ENV['RECARIO_API_TOKEN']}",
                          'Content-Type': 'application/json'
                        })
@@ -15,7 +15,7 @@ class RecarioApi
   end
 
   def delete(data)
-    conn = Faraday.new("#{ENV['RECARIO_API_HOST']}/api/v1/provider_ads/delete_ad", headers: {
+    conn = Faraday.new("http://#{ENV['RAILS_SERVICE_HOST']}/api/v1/provider_ads/delete_ad", headers: {
                          Authorization: "Bearer #{ENV['RECARIO_API_TOKEN']}",
                          'Content-Type': 'application/json'
                        })
@@ -30,7 +30,7 @@ class RecarioApi
   end
 
   def index
-    conn = Faraday.new("#{ENV['RECARIO_API_HOST']}/api/v1/provider_ads", headers: {
+    conn = Faraday.new("http://#{ENV['RAILS_SERVICE_HOST']}/api/v1/provider_ads", headers: {
                          Authorization: "Bearer #{ENV['RECARIO_API_TOKEN']}",
                          'Content-Type': 'application/json'
                        })
