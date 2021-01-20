@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './lib/corona'
+require './config/application'
 
 namespace :db do
   desc 'Create Datbase'
@@ -9,7 +10,7 @@ namespace :db do
       db.execute "CREATE DATABASE #{Corona.config.database['database']}"
     rescue Sequel::DatabaseError => e
       # TODO: dirty fix
-      raise e unless e.message =~ /already exists/
+      raise e unless /already exists/.match?(e.message)
     end
   end
 

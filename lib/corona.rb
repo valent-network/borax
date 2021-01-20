@@ -10,8 +10,6 @@ require 'logger'
 require 'sequel'
 require 'dotenv'
 
-Dotenv.load
-
 class Corona
   class << self
     def mount_auto_loader!
