@@ -24,16 +24,14 @@ module AutoRia
       result[:year] = details['productionDate'] || doc.search('h1.head').first.try(:[], 'title').to_s.scan(/((?:19|20)\d\d)/).first&.first.to_i
       set_new_car_related_fields!
 
-      if result[:maker].blank? || result[:model].blank? || result[:year] <= 0
-        return { deleted: true, details: {} }
-      end
+      return { deleted: true, details: {} } if result[:maker].blank? || result[:model].blank? || result[:year] <= 0
 
       @engine = doc.xpath("//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).to_s
       maybe_engine_capacity = @engine.scan(/(\d(?:\.\d+)?) л /).flatten.compact.uniq.first&.to_f
       maybe_horse_powers = @engine.scan(/(\d+) л.с./).flatten.compact.first&.to_f
 
       result[:gear] = details['vehicleTransmission'] || doc.xpath("//dd[./span[text()='Коробка передач']]/span[2]").try(:text).to_s.strip
-      result[:fuel] = details['fuelType'] || @engine.split('•').last.to_s.strip
+      result[:fuel] = details['fuelType'] || (@engine.include?('•') ? @engine.split('•').last.to_s.strip : '')
       result[:engine_capacity] = maybe_engine_capacity ? (maybe_engine_capacity * 1000).to_i : nil
       result[:horse_powers] = maybe_horse_powers ? maybe_horse_powers.to_i : nil
       result[:carcass] = details['bodyType']
