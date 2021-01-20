@@ -2,49 +2,54 @@
 
 module AutoRia
   class UrlsProcessor
+    attr_reader :html_to_ad_service, :recario_api_service
+
+    def initialize
+      @html_to_ad_service = HtmlToAd.new
+      @recario_api_service = RecarioApi.new
+    end
+
     def call(urls)
-      headers = {
-        'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
-        'Accept-Language' => 'en,ru-RU;q=0.8,ru;q=0.5,en-US;q=0.3',
-        'Cookie' => 'lang_id=2; lang_code=ru; lang_code=ru'
-      }
-      conn = Faraday.new do |f|
-        f.use FaradayMiddleware::FollowRedirects, limit: 5
-        f.adapter Faraday.default_adapter
-      end
       urls.each do |url_record|
-        data = { details: { address: url_record.address }, deleted: true }
-        response = conn.get(url_record.address, {}, headers)
-        data = HtmlToAd.new.call(response.body) unless response.status == 404
-        data[:details][:address] = url_record.address
+        data = url_to_data(url_record.address)
+
         if data[:deleted] == true
-          if RecarioApi.new.delete(data)
-            url_record.update(status: 'deleted')
-          else
-            url_record.update(status: 'failed')
-          end
+          status = recario_api_service.delete(data) ? 'deleted' : 'failed'
         else
-          if RecarioApi.new.update(data)
-            url_record.update(status: 'completed')
-          else
-            url_record.update(status: 'failed')
-          end
+          status = recario_api_service.update(data) ? 'completed' : 'failed'
         end
+
+        url_record.update(status: status)
       rescue FaradayMiddleware::RedirectLimitReached
-        if RecarioApi.new.delete(data)
-          url_record.update(status: 'deleted')
-        else
-          url_record.update(status: 'failed')
-        end
+        status = recario_api_service.delete(data) ? 'deleted' : 'failed'
+        url_record.update(status: status)
       rescue OpenURI::HTTPError => e
+        Corona.logger.error(e)
+        url_record.update(status: "broken_url_#{e.message}}")
+      rescue BrokenUrlError => e
         Corona.logger.error(e)
         url_record.update(status: "broken_url_#{e.message}}")
       rescue StandardError => e
         Corona.logger.error(e)
         url_record.update(status: 'broken_data_request')
-      rescue BrokenUrlError => e
-        Corona.logger.error(e)
-        url_record.update(status: "broken_url_#{e.message}}")
+      end
+    end
+
+    private
+
+    def url_to_data(url)
+      data = { details: { address: url }, deleted: true }
+      response = connection.get(url, REQUEST_OPTIONS, REQUEST_HEADERS)
+      data = html_to_ad_service.call(response.body) unless response.status == 404
+      data[:details][:address] = url
+
+      data
+    end
+
+    def connection
+      @connection ||= Faraday.new do |f|
+        f.use FaradayMiddleware::FollowRedirects, limit: 5
+        f.adapter Faraday.default_adapter
       end
     end
   end
