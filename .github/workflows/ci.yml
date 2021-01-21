@@ -15,7 +15,7 @@ jobs:
 
     - uses: ruby/setup-ruby@master
       with:
-        ruby-version: 2.7.2
+        ruby-version: 3.0.0
 
     - name: Get TAG ref
       id: vars
