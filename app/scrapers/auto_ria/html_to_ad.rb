@@ -27,8 +27,8 @@ module AutoRia
       return { deleted: true, details: {} } if result[:maker].blank? || result[:model].blank? || result[:year] <= 0
 
       @engine = doc.xpath("//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).to_s
-      maybe_engine_capacity = @engine.scan(/(\d(?:\.\d+)?) л /).flatten.compact.uniq.first&.to_f
-      maybe_horse_powers = @engine.scan(/(\d+) л.с./).flatten.compact.first&.to_f
+      maybe_engine_capacity = @engine.scan(/(\d+(?:\.\d+)?) л /).flatten.compact.uniq.first&.to_f
+      maybe_horse_powers = @engine.scan(/(\d+(?:\.\d+)?) л.с./).flatten.compact.first&.to_f
 
       result[:gear] = details['vehicleTransmission'] || doc.xpath("//dd[./span[text()='Коробка передач']]/span[2]").try(:text).to_s.strip
       result[:fuel] = details['fuelType'] || (@engine.include?('•') ? @engine.split('•').last.to_s.strip : '')
