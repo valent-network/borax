@@ -14,6 +14,10 @@ rescue StandardError => e
   puts "#{e.class}: #{e.message}"
 end
 
+Corona.mount_auto_loader!
+
+require_relative 'initializers/sidekiq'
+
 module Urls
   class Application
   end
