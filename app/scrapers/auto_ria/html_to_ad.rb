@@ -31,7 +31,7 @@ module AutoRia
       maybe_horse_powers = @engine.scan(/(\d+(?:\.\d+)?) л.с./).flatten.compact.first&.to_f || doc.search('.argument').text.scan(/(\d+(?:\.\d+)?) л.с./).flatten.first&.to_f
 
       result[:gear] = details['vehicleTransmission'] || doc.xpath("//dd[./span[text()='Коробка передач']]/span[2]").try(:text).to_s.strip
-      result[:fuel] = details['fuelType'] || (@engine.include?('•') ? @engine.split('•').last.to_s.strip : '')
+      result[:fuel] = details['fuelType'] || (@engine.include?('•') ? @engine.split('•').last.to_s.gsub(/указано продавцом/, '').strip : '')
       result[:engine_capacity] = maybe_engine_capacity ? (maybe_engine_capacity * 1000).to_i : nil
       result[:horse_powers] = maybe_horse_powers ? maybe_horse_powers.to_i : nil
       result[:carcass] = details['bodyType']
