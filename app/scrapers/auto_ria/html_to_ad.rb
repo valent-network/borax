@@ -43,8 +43,9 @@ module AutoRia
       result[:customs_clear] = doc.search('.not-cleared').empty?
       result[:deleted] = doc.search('#autoDeletedTopBlock').size >= 1
       result[:description] = doc.search('.additional-data').try(:text).to_s.gsub(/Описание/, '').gsub(/Читать еще Скрыть/, '').strip
-      result[:state_num] = doc.search('span.state-num').first&.children&.first&.text
-      result[:seller_name] = doc.search('.seller_info_name').text.strip
+      result[:state_num] = doc.search('span.state-num').first&.children&.first&.text&.strip
+      result[:seller_name] = doc.search('#userInfoBlock .seller_info_name')&.text&.strip
+      result[:seller_name] = nil if result[:seller_name] == 'Имя не указано'
 
       set_price!
 
