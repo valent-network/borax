@@ -26,7 +26,7 @@ module AutoRia
     end
 
     def persist(ids)
-      urls = ids.map { |id| "https://auto.ria.com/auto_title_#{id}.html" }
+      urls = ids.map { |id| "https://auto.ria.com/auto_title_id_#{id}.html" }
       existing_urls = Url.where(address: urls)
       existing_urls_addresses = existing_urls.select(:address).map(&:address)
       urls_to_persist = urls - existing_urls_addresses
