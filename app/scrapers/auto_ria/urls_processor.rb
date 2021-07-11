@@ -26,10 +26,10 @@ module AutoRia
         url_record.update(status: status)
       rescue OpenURI::HTTPError => e
         Corona.logger.error(e)
-        url_record.update(status: "broken_url_#{e.message}}")
+        url_record.update(status: "broken_url_#{e.message}")
       rescue BrokenUrlError => e
         Corona.logger.error(e)
-        url_record.update(status: "broken_url_#{e.message}}")
+        url_record.update(status: "broken_url_#{e.message}")
       rescue StandardError => e
         Corona.logger.error(e)
         url_record.update(status: 'broken_data_request')
