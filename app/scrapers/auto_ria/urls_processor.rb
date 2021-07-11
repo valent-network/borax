@@ -20,6 +20,7 @@ module AutoRia
         end
 
         url_record.update(status: status)
+        sleep(REQUEST_DELAY_SECONDS)
       rescue FaradayMiddleware::RedirectLimitReached
         status = recario_api_service.delete(data) ? 'deleted' : 'failed'
         url_record.update(status: status)
