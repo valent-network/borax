@@ -3,12 +3,12 @@
 module AutoRia
   class Crawler
     def call
-      first_response = connection.get(START_URL)
+      first_response = HttpConnection.new.get(START_URL)
       urls = paginate(first_response)
       ids = JSON.parse(first_response.body)['result']['search_result']['ids']
       persist(ids)
       urls.each_with_index do |url, index|
-        page = connection.get(url)
+        page = HttpConnection.new.get(url)
         new_ids = JSON.parse(page.body)['result']['search_result']['ids']
         persist(new_ids)
         puts "Page #{index + 1} finished"
@@ -17,13 +17,6 @@ module AutoRia
     end
 
     private
-
-    def connection
-      @connection ||= Faraday.new do |f|
-        f.use FaradayMiddleware::FollowRedirects, limit: 5
-        f.adapter Faraday.default_adapter
-      end
-    end
 
     def persist(ids)
       urls = ids.map { |id| "https://auto.ria.com/auto_title_id_#{id}.html" }
