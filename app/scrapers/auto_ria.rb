@@ -12,7 +12,7 @@ module AutoRia
     'Cookie' => 'lang_id=2; lang_code=ru; lang_code=ru'
   }.freeze
   REQUEST_OPTIONS = {}.freeze
-  REQUEST_DELAY_SECONDS = 0.3
+  REQUEST_DELAY_SECONDS = 1
 
   def self.crawl!
     Crawler.new.call
