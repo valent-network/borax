@@ -48,12 +48,5 @@ module AutoRia
 
       data
     end
-
-    def connection
-      @connection ||= Faraday.new do |f|
-        f.use FaradayMiddleware::FollowRedirects, limit: 5
-        f.adapter Faraday.default_adapter
-      end
-    end
   end
 end
