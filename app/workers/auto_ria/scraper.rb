@@ -4,7 +4,7 @@ module AutoRia
     sidekiq_options queue: 'provider-auto-ria-scraper', retry: false, backtrace: false
 
     def perform
-      AutoRia.scrape!(limit: 10)
+      AutoRia.scrape!(limit: 100)
     end
   end
 end
