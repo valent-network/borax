@@ -16,8 +16,9 @@ module AutoRia
     urls_to_process = Url.offset(offset).limit(limit).where(status: 'pending', source: PROVIDER)
     urls_to_process = urls_to_process.where { updated_at < Time.now.beginning_of_day } unless forced
     urls_ids = urls_to_process.select(:id).map(&:id)
-    Url.where(id: urls_ids).update(status: 'in_progress')
-    UrlsProcessor.new.call(Url.where(id: urls_ids).all)
+
+    Url.where(id: urls_ids, status: 'pending').update(status: 'in_progress')
+    UrlsProcessor.new.call(Url.where(id: urls_ids, status: 'in_progress').all)
   end
 
   def self.t(url)
