@@ -6,26 +6,13 @@ module AutoRia
       first_response = HttpConnection.new.get(START_URL)
       urls = paginate(first_response)
       ids = JSON.parse(first_response.body)['result']['search_result']['ids']
-      persist(ids)
+      UrlsPersister.new.call(ids)
       urls.each_with_index do |url, index|
-        page = HttpConnection.new.get(url)
-        new_ids = JSON.parse(page.body)['result']['search_result']['ids']
-        persist(new_ids)
-        puts "Page #{index + 1} finished"
-        sleep(REQUEST_DELAY_SECONDS)
+        AutoRia::PageCrawler.perform_async(url, index)
       end
     end
 
     private
-
-    def persist(ids)
-      urls = ids.map { |id| "https://auto.ria.com/auto_title_id_#{id}.html" }
-      existing_urls = Url.where(address: urls)
-      existing_urls_addresses = existing_urls.select(:address).map(&:address)
-      urls_to_persist = urls - existing_urls_addresses
-      Url.import(%i[address status source created_at updated_at], urls_to_persist.map { |url| [url, 'pending', PROVIDER, Time.now, Time.now] })
-      existing_urls.update(status: 'pending')
-    end
 
     def paginate(response)
       json = JSON.parse(response.body)
