@@ -5,7 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.0'
 
-gem 'clockwork'
 gem 'dotenv'
 gem 'faraday'
 gem 'faraday_middleware'
