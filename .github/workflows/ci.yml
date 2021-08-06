@@ -58,4 +58,4 @@ jobs:
       run: kubectl set image --record deployment/urls-sidekiq urls-sidekiq=recario/urls:${{steps.vars.outputs.tag}}
 
     - name: Verify deployment
-      run: kubectl rollout status deployment/urls
+      run: kubectl rollout status deployment/urls-sidekiq
