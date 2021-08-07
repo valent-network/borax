@@ -4,7 +4,10 @@ class UrlsPersister
     existing_urls = Url.where(address: urls)
     existing_urls_addresses = existing_urls.select(:address).map(&:address)
     urls_to_persist = urls - existing_urls_addresses
+
     Url.import(%i[address status source created_at updated_at], urls_to_persist.map { |url| [url, 'pending', AutoRia::PROVIDER, Time.now, Time.now] })
     existing_urls.update(status: 'pending')
+
+    Url.where(address: urls).each { |url| AutoRia::Processor.perform_async(url.id) }
   end
 end

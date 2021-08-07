@@ -1,6 +1,7 @@
 module AutoRia
   class Scraper
     include Sidekiq::Worker
+
     sidekiq_options queue: 'provider-auto-ria-scraper', retry: false, backtrace: false
 
     def perform(offset = 0, limit = 10, forced = false)

@@ -1,6 +1,7 @@
 module AutoRia
   class PageCrawler
     include Sidekiq::Worker
+
     sidekiq_options queue: 'provider-auto-ria-page-crawler', retry: true, backtrace: false
 
     def perform(url, index)

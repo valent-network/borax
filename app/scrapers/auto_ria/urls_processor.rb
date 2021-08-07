@@ -2,11 +2,15 @@
 
 module AutoRia
   class UrlsProcessor
-    attr_reader :html_to_ad_service, :recario_api_service
+    RECEIVERS = {
+      delete: { queue: 'provider.ads.delete', class: 'DeleteAd' },
+      new: { queue: 'provider.ads.new', class: 'PutAd' }
+    }.freeze
+
+    attr_reader :html_to_ad_service
 
     def initialize
       @html_to_ad_service = HtmlToAd.new
-      @recario_api_service = RecarioApi.new
     end
 
     def call(urls)
@@ -14,16 +18,14 @@ module AutoRia
         data = url_to_data(url_record.address)
 
         if data[:deleted] == true
-          status = recario_api_service.delete(data) ? 'deleted' : 'failed'
+          callback(RECEIVERS[:delete][:class], RECEIVERS[:delete][:queue], url_record.address)
         else
-          status = recario_api_service.update(data) ? 'completed' : 'failed'
+          callback(RECEIVERS[:new][:class], RECEIVERS[:new][:queue], data.to_json)
         end
 
-        url_record.update(status: status)
         sleep(REQUEST_DELAY_SECONDS)
       rescue FaradayMiddleware::RedirectLimitReached
-        status = recario_api_service.delete(data) ? 'deleted' : 'failed'
-        url_record.update(status: status)
+        callback(RECEIVERS[:delete][:class], RECEIVERS[:delete][:queue], url_record.address)
       rescue OpenURI::HTTPError => e
         Corona.logger.error(e)
         url_record.update(status: "broken_url_#{e.message}")
@@ -47,6 +49,16 @@ module AutoRia
       data[:details][:address] = url
 
       data
+    end
+
+    def callback(klass, queue, params)
+      Sidekiq::Client.push(
+        'class' => klass,
+        'args' => [params],
+        'queue' => queue,
+        'retry' => true,
+        'backtrace' => false
+      )
     end
   end
 end

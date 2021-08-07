@@ -27,12 +27,4 @@ module AutoRia
     html = UrlToHtml.new.call(url)
     HtmlToAd.new.call(html)
   end
-
-  def self.actualize!
-    addresses = JSON.parse(RecarioApi.new.index.body)
-    Url.where(address: addresses).update(status: 'in_progress')
-    urls = Url.where(address: addresses, status: 'in_progress').all
-
-    urls.each { |url| AutoRia::Processor.perform_async(url.id) }
-  end
 end

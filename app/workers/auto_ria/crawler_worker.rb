@@ -1,6 +1,7 @@
 module AutoRia
   class CrawlerWorker
     include Sidekiq::Worker
+
     sidekiq_options queue: 'provider-auto-ria-crawler', retry: true, backtrace: false
 
     def perform
