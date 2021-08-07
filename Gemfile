@@ -14,6 +14,7 @@ gem 'rake'
 gem 'sequel'
 gem 'sidekiq'
 gem 'zeitwerk'
+gem 'activesupport'
 
 group :development do
   gem 'byebug'
