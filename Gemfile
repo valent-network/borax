@@ -19,4 +19,5 @@ group :development do
   gem 'byebug'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
+  gem 'foreman', require: false
 end
