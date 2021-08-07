@@ -3,8 +3,8 @@
 module AutoRia
   class UrlsProcessor
     RECEIVERS = {
-      delete: { queue: 'provider.ads.delete', class: 'DeleteAd' },
-      new: { queue: 'provider.ads.new', class: 'PutAd' }
+      delete: { queue: 'provider-ads-delete', class: 'DeleteAd' },
+      new: { queue: 'provider-ads-new', class: 'PutAd' }
     }.freeze
 
     attr_reader :html_to_ad_service
