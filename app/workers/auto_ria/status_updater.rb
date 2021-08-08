@@ -7,14 +7,15 @@ module AutoRia
     STATUSES = %w[failed deleted completed].freeze
 
     def perform(message)
-      message = JSON.parse(message).with_indifferent_access
+      message = JSON.parse(message)
 
-      status = message[:status].to_s.downcase
-      address = message[:address].to_s.downcase
+      status = message['status'].to_s.downcase
+      address = message['address'].to_s.downcase
+      errors = message['errors']
 
       if STATUSES.include?(status)
         Url.where(address: address).update(status: status)
-        logger.info("[AutoRia::StatusUpdater][#{status}][#{address}] #{message[:errors]}")
+        logger.info("[AutoRia::StatusUpdater][#{status}][#{address}] #{errors}")
       else
         logger.info("[AutoRia::StatusUpdater][UnknownStatus] #{status}")
       end
