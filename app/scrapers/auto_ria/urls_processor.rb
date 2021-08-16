@@ -31,6 +31,7 @@ module AutoRia
         url_record.update(status: "broken_url_#{e.message}")
       rescue BrokenUrlError => e
         Corona.logger.error(e)
+        Corona.logger.error("[UrlsProcessor][BrokenUrlError] #{url_record.address}")
         url_record.update(status: "broken_url_#{e.message}")
       rescue StandardError => e
         Corona.logger.error(e)
