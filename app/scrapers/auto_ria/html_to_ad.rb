@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_support/all'
-
 module AutoRia
   class HtmlToAd
     attr_reader :doc, :result, :details

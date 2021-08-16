@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ENV['CORONA_ENV'] ||= 'development'
+
 require 'yaml'
 require 'erb'
 require 'rubygems'
@@ -9,6 +10,8 @@ require 'zeitwerk'
 require 'logger'
 require 'sequel'
 require 'dotenv'
+require 'active_support/all'
+require 'open-uri'
 
 class Corona
   class << self

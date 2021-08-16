@@ -1,4 +1,4 @@
-require 'active_support/core_ext/integer/time'
+# frozen_string_literal: true
 
 module AutoRia
   class CrawlerWorker
@@ -11,7 +11,7 @@ module AutoRia
       last_finished_at = DateTime.parse(last_finished_at_or_nil || 1.day.ago.to_s)
       return if last_finished_at > Time.now - 1.hour
 
-      AutoRia.crawl!
+      AutoRia::Crawler.new.call
       REDIS.set('provider.crawler.finished_at', Time.now)
     end
   end

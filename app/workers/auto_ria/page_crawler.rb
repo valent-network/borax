@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AutoRia
   class PageCrawler
     include Sidekiq::Worker

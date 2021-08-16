@@ -2,8 +2,6 @@
 
 require './lib/corona'
 
-require 'open-uri'
-
 Bundler.require(:default, Corona.env)
 
 Dotenv.load("#{Corona.root}/.env", "#{Corona.root}/.env.#{Corona.env}")

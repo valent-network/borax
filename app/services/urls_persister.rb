@@ -1,5 +1,3 @@
-require 'active_support/core_ext/integer/time'
-
 class UrlsPersister
   def call(ids)
     urls = ids.map { |id| "https://auto.ria.com/auto_title_id_#{id}.html" }
