@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.0'
 
+gem 'activesupport'
 gem 'dotenv'
 gem 'faraday'
 gem 'faraday_middleware'
@@ -14,11 +15,10 @@ gem 'rake'
 gem 'sequel'
 gem 'sidekiq'
 gem 'zeitwerk'
-gem 'activesupport'
 
 group :development do
   gem 'byebug'
+  gem 'foreman', require: false
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
-  gem 'foreman', require: false
 end
