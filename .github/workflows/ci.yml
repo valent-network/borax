@@ -55,7 +55,10 @@ jobs:
         curl --silent -X GET -H 'Authorization: Bearer ${{ secrets.DO_TOKEN }}' https://api.digitalocean.com/v2/kubernetes/clusters/${{ secrets.K8_ID }}/kubeconfig?expiry_seconds=3600 -o $HOME/.kube/config
 
     - name: Update sidekiq image for k8 cluster
-      run: kubectl set image --record deployment/scraper-worker scraper-worker=recario/urls:${{steps.vars.outputs.tag}}
+      run: kubectl set image --record deployment/provider-worker provider-worker=recario/urls:${{steps.vars.outputs.tag}}
+
+    - name: Update sidekiq image for k8 cluster
+      run: kubectl set image --record deployment/provider-processor-worker provider-processor-worker=recario/urls:${{steps.vars.outputs.tag}}
 
     - name: Verify deployment
-      run: kubectl rollout status deployment/scraper-worker
+      run: kubectl rollout status deployment/provider-processor-worker
