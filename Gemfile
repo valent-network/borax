@@ -14,6 +14,7 @@ gem 'pg'
 gem 'rake'
 gem 'sequel'
 gem 'sidekiq'
+gem 'sidekiq-unique-jobs'
 gem 'zeitwerk'
 
 group :development do
