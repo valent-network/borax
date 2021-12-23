@@ -8,9 +8,11 @@ namespace :db do
   task :create do
     Sequel.connect(Corona.config.database.merge('database' => 'postgres')) do |db|
       db.execute "CREATE DATABASE #{Corona.config.database['database']}"
+      Corona.logger.info("Database #{Corona.config.database['database']} created")
     rescue Sequel::DatabaseError => e
       # TODO: dirty fix
       raise e unless /already exists/.match?(e.message)
+      Corona.logger.warn("Database #{Corona.config.database['database']} already exists")
     end
   end
 

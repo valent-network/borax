@@ -1,4 +1,4 @@
-FROM ruby:3.0.0-alpine
+FROM ruby:3.0.3-alpine
 
 RUN apk update && apk --no-cache add build-base postgresql-dev tzdata git bash
 
@@ -11,11 +11,11 @@ ENV CORONA_ENV $CORONA_ENV
 
 WORKDIR /gems
 
-RUN gem install bundler -v 2.2.31
+RUN gem install bundler -v 2.2.32
 RUN bundle install -j 8 --full-index --without development test
 
 WORKDIR /app
 
 COPY . /app
 
-CMD bundle exec rake db:create db:migrate && bundle exec clockwork clock.rb
+CMD bundle exec clockwork clock.rb
