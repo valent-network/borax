@@ -12,6 +12,7 @@ namespace :db do
     rescue Sequel::DatabaseError => e
       # TODO: dirty fix
       raise e unless /already exists/.match?(e.message)
+
       Corona.logger.warn("Database #{Corona.config.database['database']} already exists")
     end
   end

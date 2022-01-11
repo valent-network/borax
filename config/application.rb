@@ -14,6 +14,12 @@ end
 
 Corona.mount_auto_loader!
 
+Corona.logger.level = begin
+  ENV['CORONA_LOG_LEVEL'].present? ? "Logger::#{ENV['CORONA_LOG_LEVEL'].upcase}".constantize : Logger::WARN
+rescue NameError
+  Logger::WARN
+end
+
 require_relative 'initializers/redis'
 require_relative 'initializers/sidekiq'
 

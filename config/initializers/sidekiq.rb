@@ -8,6 +8,7 @@ redis_options.delete(:password) if redis_options[:password].blank?
 
 Sidekiq.configure_server do |config|
   config.redis = redis_options
+  config.logger.level = Corona.logger.level
 
   config.client_middleware do |chain|
     chain.add SidekiqUniqueJobs::Middleware::Client
@@ -22,6 +23,7 @@ end
 
 Sidekiq.configure_client do |config|
   config.redis = redis_options
+  config.logger.level = Corona.logger.level
 
   config.client_middleware do |chain|
     chain.add SidekiqUniqueJobs::Middleware::Client
