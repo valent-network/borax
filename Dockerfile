@@ -11,7 +11,7 @@ ENV CORONA_ENV $CORONA_ENV
 
 WORKDIR /gems
 
-RUN gem install bundler -v 2.2.32
+RUN gem install bundler -v 2.3.3
 RUN bundle install -j 8 --full-index --without development test
 
 WORKDIR /app
