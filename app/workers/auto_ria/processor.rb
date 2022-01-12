@@ -15,7 +15,7 @@ module AutoRia
       if urls.size.positive?
         UrlsProcessor.new.call(urls)
       else
-        puts("[AutoRia::Processor][#{url_id}][Not Found]")
+        Sidekiq.logger.warn("[AutoRia::Processor][#{url_id}][Not Found]")
       end
     end
   end

@@ -10,7 +10,7 @@ module AutoRia
       page = HttpConnection.new.get(url)
       ids = JSON.parse(page.body)['result']['search_result']['ids']
       UrlsPersister.new.call(ids)
-      puts("[PageCrawler][#{index.to_i + 1}][Finished]")
+      Sidekiq.logger.info("[PageCrawler][#{index.to_i + 1}][Finished]")
     end
   end
 end
