@@ -22,6 +22,7 @@ namespace :db do
     require 'sequel/core'
     Sequel.extension :migration
     version = args[:version].to_i if args[:version]
+    Corona.logger.info("Migrating #{Corona.config.database}")
     Sequel.connect(Corona.config.database) do |db|
       Sequel::Migrator.run(db, 'db/migrations', target: version)
     end
