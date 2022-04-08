@@ -42,7 +42,7 @@ class Corona
     end
 
     def config
-      OpenStruct.new(database: YAML.safe_load(ERB.new(File.read("#{root}/config/database.yml")).result)[env])
+      OpenStruct.new(database: YAML.safe_load(ERB.new(File.read("#{root}/config/database.yml.alternative")).result)[env])
     end
 
     def root
