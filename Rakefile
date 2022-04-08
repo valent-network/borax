@@ -11,9 +11,13 @@ namespace :db do
       Corona.logger.info("Database #{Corona.config.database['database']} created")
     rescue Sequel::DatabaseError => e
       # TODO: dirty fix
-      raise e unless /already exists/.match?(e.message)
 
-      Corona.logger.warn("Database #{Corona.config.database['database']} already exists")
+      if /already exists/.match?(e.message)
+        Corona.logger.warn("Database #{Corona.config.database['database']} already exists")
+      else
+        Corona.logger.error("[DBCreateError] database_url=#{ENV['DATABASE_URL']} corona_database=#{Corona.config.database} backtrace=#{e.backtrace.join(';')}")
+        raise e
+      end
     end
   end
 
