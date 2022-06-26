@@ -37,7 +37,9 @@ module AutoRia
       result[:carcass] = details['bodyType']
       result[:wheels] = doc.xpath("//dd[./span[text()='Привод']]/span[2]").try(:text).to_s.strip
       result[:color] = doc.xpath("//dd[./span[text()='Цвет']]/span[2]").try(:first).try(:text).to_s.strip
-      result[:phone] = doc.search("a[data-call]").first['href'].gsub(/^tel:/, '')
+      result[:phone] = doc.search("a[data-call]").first['href'].gsub(/^tel:/, '').presence ||
+                       doc.search("a[data-call]").first['data-call'].presence ||
+                       doc.search('span.phone').first&.attribute('data-phone-number').try(:text)
       result[:region] = [doc.search('#breadcrumbs .item span').try(:[], 1).try(:text), doc.search('#breadcrumbs .item span').try(:[], 2).try(:text)]
       result[:images_json_array_tmp] = doc.search('.gallery-order img').map { |i| i['src'] }.map { |src| src.gsub(/s\.jpg$/, 'f.jpg') }.to_json
       result[:customs_clear] = doc.search('.not-cleared').empty?
