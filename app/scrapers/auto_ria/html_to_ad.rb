@@ -52,6 +52,17 @@ module AutoRia
 
       set_price!
 
+      if !!(result[:phone] =~ /xxx/)
+        begin
+          ad_id = doc.search("li.item.grey").select { |node| node.text =~ /ID/ }.first.search("span").text
+          phone_details_url = "https://auto.ria.com/users/phones/#{ad_id}?hash=#{doc.search('script[data-hash]').first['data-hash']}&expires=#{doc.search('script[data-hash]').first['data-expires']}"
+          phone_details_json = JSON.parse(HttpConnection.new.get(phone_details_url).body)
+          result[:phone] = phone_details_json['formattedPhoneNumber']
+        rescue StandardError => e
+          puts e
+        end
+      end
+
       {
         price: result.delete(:price),
         deleted: result.delete(:deleted),
