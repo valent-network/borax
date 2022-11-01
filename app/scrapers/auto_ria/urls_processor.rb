@@ -20,7 +20,7 @@ module AutoRia
         if data[:deleted] == true
           callback(RECEIVERS[:delete][:class], RECEIVERS[:delete][:queue], url_record.address)
         else
-          callback(RECEIVERS[:new][:class], RECEIVERS[:new][:queue], data.to_json)
+          callback(RECEIVERS[:new][:class], RECEIVERS[:new][:queue], Zlib.deflate(data.to_json))
         end
 
         sleep(REQUEST_DELAY_SECONDS)
