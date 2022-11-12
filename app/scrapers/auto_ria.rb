@@ -14,7 +14,7 @@ module AutoRia
   AD_SCRAPE_FREQUENCE = 12.hours
 
   def self.t(url)
-    html = HttpConnection.new.get(url).body
+    html = HttpConnection.new.get(url)[:body]
     HtmlToAd.new.call(html)
   rescue TypeError => e
     Corona.logger.error(e)
