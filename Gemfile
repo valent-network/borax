@@ -5,14 +5,18 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.1.0'
 
-gem 'activesupport'
-gem 'dotenv'
-gem 'faraday'
-gem 'faraday_middleware'
-gem 'nokogiri'
-gem 'sidekiq'
-gem 'sidekiq-unique-jobs'
-gem 'zeitwerk'
+gem 'activesupport', '~> 7'
+gem 'dotenv', '~> 2'
+gem 'faraday', '~> 1'
+gem 'faraday_middleware', '~> 1'
+gem 'nokogiri', '~> 1'
+
+# Can't upgrade to 7
+# https://github.com/mhenrixon/sidekiq-unique-jobs/issues/684
+gem 'sidekiq', '~> 6'
+
+gem 'sidekiq-unique-jobs', '~> 7'
+gem 'zeitwerk', '~> 2'
 
 group :development do
   gem 'byebug'
