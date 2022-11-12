@@ -1,6 +1,6 @@
 FROM ruby:3.1.0-alpine
 
-RUN apk update && apk --no-cache add build-base postgresql-dev tzdata git bash
+RUN apk update && apk --no-cache add build-base tzdata git bash
 
 RUN mkdir -p /app/tmp/pids
 

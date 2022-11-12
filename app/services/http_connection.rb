@@ -1,5 +1,3 @@
-require 'ostruct'
-
 class HttpConnection
   REQUEST_HEADERS = {
     'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
@@ -21,15 +19,16 @@ class HttpConnection
 
   def get(url)
     @last_response = connection.get(url, REQUEST_OPTIONS, REQUEST_HEADERS)
+    response = Struct.new(:status, )
 
-    OpenStruct.new({
-                     status: last_response.status,
-                     body: last_response.body,
-                     json: begin
-                       JSON.parse(last_response.body)
-                     rescue StandardError
-                       nil
-                     end
-                   })
+    {
+       status: last_response.status,
+       body: last_response.body,
+       json: begin
+         JSON.parse(last_response.body)
+       rescue StandardError
+         nil
+       end
+     }
   end
 end

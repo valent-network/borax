@@ -47,11 +47,9 @@ GEM
     parallel (1.21.0)
     parser (3.0.3.2)
       ast (~> 2.4.1)
-    pg (1.2.3)
     racc (1.6.0)
     rack (2.2.3)
     rainbow (3.0.0)
-    rake (13.0.6)
     redis (4.5.1)
     regexp_parser (2.2.0)
     rexml (3.2.5)
@@ -71,7 +69,6 @@ GEM
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    sequel (5.51.0)
     sidekiq (6.3.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
@@ -100,11 +97,8 @@ DEPENDENCIES
   faraday_middleware
   foreman
   nokogiri
-  pg
-  rake
   rubocop
   rubocop-performance
-  sequel
   sidekiq
   sidekiq-unique-jobs
   zeitwerk

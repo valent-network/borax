@@ -11,10 +11,13 @@ module AutoRia
   # top=10 means for 2 days (?)
   # order_by=7 means by date
   START_URL = "https://auto.ria.com/api/search/auto?indexName=auto&order_by=7&top=10&abroad=2&custom=1&page=1&countpage=#{CRAWLER_PER_PAGE}&with_feedback_form=1&withOrderAutoInformer=1&with_last_id=1"
-  REQUEST_DELAY_SECONDS = 0.0
+  AD_SCRAPE_FREQUENCE = 12.hours
 
   def self.t(url)
-    html = UrlToHtml.new.call(url)
+    html = HttpConnection.new.get(url).body
     HtmlToAd.new.call(html)
+  rescue TypeError => e
+    Corona.logger.error(e)
+    raise(BrokenUrlError, 'type')
   end
 end

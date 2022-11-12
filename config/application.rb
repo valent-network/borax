@@ -6,13 +6,6 @@ Bundler.require(:default, Corona.env)
 
 Dotenv.load("#{Corona.root}/.env", "#{Corona.root}/.env.#{Corona.env}")
 
-begin
-  Corona.logger.info(Corona.config.database)
-  DB = Sequel.connect(Corona.config.database)
-rescue StandardError => e
-  Corona.logger.error("#{e.class}: #{e.message}")
-end
-
 Corona.mount_auto_loader!
 
 Corona.logger.level = begin

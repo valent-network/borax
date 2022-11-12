@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module AutoRia
-  class HtmlToAd
+  class Parser
     attr_reader :doc, :result, :details
 
     def initialize
@@ -37,8 +37,8 @@ module AutoRia
       result[:carcass] = details['bodyType']
       result[:wheels] = doc.xpath("//dd[./span[text()='Привод']]/span[2]").try(:text).to_s.strip
       result[:color] = doc.xpath("//dd[./span[text()='Цвет']]/span[2]").try(:first).try(:text).to_s.strip
-      result[:phone] = doc.search("a[data-call]").first.try(:[], :href).to_s.gsub(/^tel:/, '').presence ||
-                       doc.search("a[data-call]").first.try(:[], 'data-call').to_s.presence ||
+      result[:phone] = doc.search('a[data-call]').first.try(:[], :href).to_s.gsub(/^tel:/, '').presence ||
+                       doc.search('a[data-call]').first.try(:[], 'data-call').to_s.presence ||
                        doc.search('span.phone').first&.attribute('data-phone-number').try(:text).presence ||
                        JSON.parse(CGI.unescape(doc.search('.phone.bold').first.try(:[], 'data-phone-unmask'))).try(:[], 'phoneNumber').presence
       result[:region] = [doc.search('#breadcrumbs .item span').try(:[], 1).try(:text), doc.search('#breadcrumbs .item span').try(:[], 2).try(:text)]
@@ -52,11 +52,11 @@ module AutoRia
 
       set_price!
 
-      if !!(result[:phone] =~ /xxx/)
+      unless result[:phone].include?('xxx').nil?
         begin
-          ad_id = doc.search("li.item.grey").select { |node| node.text =~ /ID/ }.first.search("span").text
+          ad_id = doc.search('li.item.grey').find { |node| node.text.include?('ID') }.search('span').text
           phone_details_url = "https://auto.ria.com/users/phones/#{ad_id}?hash=#{doc.search('script[data-hash]').first['data-hash']}&expires=#{doc.search('script[data-hash]').first['data-expires']}"
-          phone_details_json = JSON.parse(HttpConnection.new.get(phone_details_url).body)
+          phone_details_json = JSON.parse(HttpConnection.new.get(phone_details_url)[:body])
           result[:phone] = phone_details_json['formattedPhoneNumber']
         rescue StandardError => e
           puts e

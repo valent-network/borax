@@ -8,7 +8,6 @@ require 'rubygems'
 require 'bundler/setup'
 require 'zeitwerk'
 require 'logger'
-require 'sequel'
 require 'dotenv'
 require 'active_support/all'
 require 'open-uri'
@@ -39,10 +38,6 @@ class Corona
 
     def logger
       @logger ||= Logger.new($stdout)
-    end
-
-    def config
-      OpenStruct.new(database: YAML.safe_load(ERB.new(File.read("#{root}/config/database.yml.alternative")).result)[env])
     end
 
     def root
