@@ -1,4 +1,4 @@
-FROM ruby:3.1.0-alpine
+FROM ruby:3.2-rc-alpine
 
 RUN apk update && apk --no-cache add build-base tzdata git bash
 
