@@ -19,16 +19,15 @@ class HttpConnection
 
   def get(url)
     @last_response = connection.get(url, REQUEST_OPTIONS, REQUEST_HEADERS)
-    response = Struct.new(:status, )
 
     {
-       status: last_response.status,
-       body: last_response.body,
-       json: begin
-         JSON.parse(last_response.body)
-       rescue StandardError
-         nil
-       end
-     }
+      status: last_response.status,
+      body: last_response.body,
+      json: begin
+        JSON.parse(last_response.body)
+      rescue StandardError
+        nil
+      end
+    }
   end
 end
