@@ -1,5 +1,8 @@
-# Recario Provider
+# recar.io Ads Provider
 
-Example application how Provider application could be implemented to populate and update ads on Recario Serveer platform.
+This service finds Ads at different 3rd-party sources and sends them to Carbo to persist.
 
-Pure ruby application.
+Ruby application Sidekiq runner as the main entry point.
+
+- Ruby 3.2
+- Sidekiq 6
