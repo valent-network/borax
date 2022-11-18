@@ -1,21 +1,45 @@
+FROM ruby:3.2-rc-alpine AS Builder
+
+ENV BUILD_PACKAGES="build-base git"
+
+ENV BUNDLER_VERSION="2.3.3"
+
+RUN apk add --no-cache $BUILD_PACKAGES && \
+  gem install bundler:$BUNDLER_VERSION && \
+  rm -rf /var/cache/apk/*
+
+WORKDIR /app
+
+ADD Gemfile* /app/
+
+RUN  bundle config --local without "development test" && \
+     bundle install -j8 --no-cache && \
+     bundle clean --force && \
+     rm -rf /usr/local/bundle/cache && \
+     find /usr/local/bundle/gems/ -name "*.c" -delete && \
+     find /usr/local/bundle/gems/ -name "*.o" -delete
+
+ADD . /app
+
+RUN rm -rf node_modules tmp/cache vendor/assets lib/assets spec
+
 FROM ruby:3.2-rc-alpine
 
-RUN apk update && apk --no-cache add build-base tzdata git bash
+ENV EFFECTIVE_PACKAGES="bash tzdata"
 
-RUN mkdir -p /app/tmp/pids
-
-COPY Gemfile* /gems/
+RUN apk add --no-cache $EFFECTIVE_PACKAGES
 
 ARG CORONA_ENV
 ENV CORONA_ENV $CORONA_ENV
 
-WORKDIR /gems
-
-RUN gem install bundler -v 2.3.3
-RUN bundle install -j 8 --full-index --without development test
-
 WORKDIR /app
 
-COPY . /app
+# Add user
+RUN addgroup -g 1000 -S app && adduser -u 1000 -S app -G app
+USER app
 
-CMD bundle exec clockwork clock.rb
+# Copy app with gems from former build stage
+COPY --from=Builder /usr/local/bundle/ /usr/local/bundle/
+COPY --from=Builder --chown=app:app /app /app
+
+CMD bundle exec sidekiq -r ./config/application.rb -c 10 -q provider
