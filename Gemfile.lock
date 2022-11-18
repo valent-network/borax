@@ -46,6 +46,7 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.16.3)
     multipart-post (2.2.3)
+    newrelic_rpm (8.13.0)
     nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -102,6 +103,7 @@ DEPENDENCIES
   faraday (~> 1)
   faraday_middleware (~> 1)
   foreman
+  newrelic_rpm
   nokogiri (~> 1)
   rubocop
   rubocop-performance

@@ -18,6 +18,8 @@ gem 'sidekiq', '~> 6'
 gem 'sidekiq-unique-jobs', '~> 7'
 gem 'zeitwerk', '~> 2'
 
+gem 'newrelic_rpm'
+
 group :development do
   gem 'byebug'
   gem 'foreman', require: false
