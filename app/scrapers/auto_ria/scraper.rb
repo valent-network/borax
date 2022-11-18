@@ -8,6 +8,8 @@ module AutoRia
       data = AutoRia::Parser.new.call(response[:body]) unless response[:status] == 404
       data[:details][:address] = url
 
+      Sidekiq.logger.warn("[AutoRia::Scraper][FinishedSuccessfully] address=#{url} deleted=#{data[:deleted]}")
+
       data
     end
   end

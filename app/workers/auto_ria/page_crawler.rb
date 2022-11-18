@@ -12,7 +12,7 @@ module AutoRia
 
       UrlsPersister.new.call(ids)
 
-      Sidekiq.logger.info("[PageCrawler][#{index.to_i + 1}][Finished]")
+      Sidekiq.logger.warn("[PageCrawler][Finished] index=#{index.to_i + 1} ids=#{ids.to_json}")
     end
   end
 end
