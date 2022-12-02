@@ -26,7 +26,8 @@ module AutoRia
 
       return { deleted: true, details: {} } if result[:maker].blank? || result[:model].blank? || result[:year] <= 0
 
-      @engine = doc.xpath("//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).to_s
+      @engine = doc.search("#details").xpath(".//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).presence ||
+                doc.xpath("//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).to_s
       maybe_engine_capacity = @engine.scan(/(\d+(?:\.\d+)?) л /).flatten.compact.uniq.first&.to_f
       maybe_horse_powers = @engine.scan(/(\d+(?:\.\d+)?) л.с./).flatten.compact.first&.to_f || doc.search('.argument').text.scan(/(\d+(?:\.\d+)?) л.с./).flatten.first&.to_f
 
@@ -36,7 +37,8 @@ module AutoRia
       result[:horse_powers] = maybe_horse_powers ? maybe_horse_powers.to_i : nil
       result[:carcass] = details['bodyType'] || doc.search("#details dd").first.text.split("•").first&.strip
       result[:wheels] = doc.xpath("//dd[./span[text()='Привод']]/span[2]").try(:text).to_s.strip
-      result[:color] = doc.xpath("//dd[./span[text()='Цвет']]/span[2]").try(:first).try(:text).to_s.strip
+      result[:color] = doc.search("#details").xpath(".//dd[./span[text()='Цвет']]/span[2]").try(:first).try(:text).to_s.strip.presence ||
+                       doc.xpath("//dd[./span[text()='Цвет']]/span[2]").try(:first).try(:text).to_s.strip
       result[:phone] = doc.search('a[data-call]').first.try(:[], :href).to_s.gsub(/^tel:/, '').presence ||
                        doc.search('a[data-call]').first.try(:[], 'data-call').to_s.presence ||
                        doc.search('span.phone').first&.attribute('data-phone-number').try(:text).presence ||
