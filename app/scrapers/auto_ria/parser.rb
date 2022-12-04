@@ -26,13 +26,13 @@ module AutoRia
 
       return { deleted: true, details: {} } if result[:maker].blank? || result[:model].blank? || result[:year] <= 0
 
-      @engine = doc.search("#details").xpath(".//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).presence ||
-                doc.xpath("//dd[./span[text()='Двигатель']]/span[2]").try(:first).try(:text).to_s
+      @engine = doc.search(".vin-checked .technical-info.ticket-checked").xpath(".//dd[./span[text()='Двигатель']]/span[2]").xpath("text()").text.gsub(/\d л/, '').gsub(/[\d\.]/, "").strip.presence ||
+                doc.search("#details").xpath(".//dd[./span[text()='Двигатель']]/span[2]").xpath("text()").text.gsub(/\d л/, '').gsub(/[\d\.]/, "").strip.presence
       maybe_engine_capacity = @engine.scan(/(\d+(?:\.\d+)?) л /).flatten.compact.uniq.first&.to_f
       maybe_horse_powers = @engine.scan(/(\d+(?:\.\d+)?) л.с./).flatten.compact.first&.to_f || doc.search('.argument').text.scan(/(\d+(?:\.\d+)?) л.с./).flatten.first&.to_f
 
       result[:gear] = details['vehicleTransmission'] || doc.xpath("//dd[./span[text()='Коробка передач']]/span[2]").try(:text).to_s.strip
-      result[:fuel] = details['fuelType'] || (@engine.include?('•') ? @engine.split('•').last.to_s.gsub(/указано продавцом/, '').strip : '')
+      result[:fuel] = details['fuelType'] || @engine
       result[:engine_capacity] = maybe_engine_capacity ? (maybe_engine_capacity * 1000).to_i : nil
       result[:horse_powers] = maybe_horse_powers ? maybe_horse_powers.to_i : nil
       result[:carcass] = details['bodyType'] || doc.search("#details dd").first.text.split("•").first&.strip
