@@ -21,7 +21,7 @@ module AutoRia
           {}
         end
       result[:new_car] = (doc.xpath("//a[@href='#first-registration']").size >= 1 || doc.search('.base-information').try(:text).to_s.downcase =~ /без пробега/) || false
-      result[:year] = details['productionDate'] || doc.search('h1.head').first.try(:[], 'title').to_s.scan(/\s((?:19|20)\d\d\Z)/).flatten.first
+      result[:year] = details['productionDate'] || doc.search('h1.head').first.try(:[], 'title').to_s.scan(/\s((?:19|20)\d\d\Z)/).flatten.first.to_i
       set_new_car_related_fields!
 
       return { deleted: true, details: {} } if result[:maker].blank? || result[:model].blank? || result[:year] <= 0
