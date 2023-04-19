@@ -42,4 +42,4 @@ USER app
 COPY --from=Builder /usr/local/bundle/ /usr/local/bundle/
 COPY --from=Builder --chown=app:app /app /app
 
-CMD bundle exec sidekiq -r ./config/application.rb -c 10 -q provider
+CMD bundle exec rails db:migrate; bundle exec sidekiq -r ./config/application.rb -c 10 -q provider
