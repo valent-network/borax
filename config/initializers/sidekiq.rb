@@ -1,6 +1,4 @@
-redis_options = REDIS_CONFIGURATION.merge({
-  driver: :hiredis,
-})
+redis_options = REDIS_CONFIGURATION.dup
 
 redis_options.delete(:password) if redis_options[:password].blank?
 
