@@ -73,7 +73,6 @@ module AutoRia
         price: result.delete(:price),
         deleted: result.delete(:deleted),
         phone: result.delete(:phone),
-        ad_type: 'car',
         details: result
       }
     rescue StandardError => e
