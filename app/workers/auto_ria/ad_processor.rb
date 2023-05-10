@@ -15,13 +15,13 @@ module AutoRia
       (data[:deleted] == true) ? delete(url) : put(data)
     rescue FaradayMiddleware::RedirectLimitReached => e
       delete(url)
-      Sidekiq.logger.warn("[UrlsProcessor][FaradayMiddleware::RedirectLimitReached] url=#{url} error_message=#{e.message} error=#{e}")
+      Sentry.capture_message("[UrlsProcessor][FaradayMiddleware::RedirectLimitReached] url=#{url} error_message=#{e.message} error=#{e}", level: :info)
     rescue OpenURI::HTTPError => e
-      Sidekiq.logger.warn("[UrlsProcessor][OpenURI::HTTPError] url=#{url} error_message=#{e.message} error=#{e}")
+      Sentry.capture_message("[UrlsProcessor][OpenURI::HTTPError] url=#{url} error_message=#{e.message} error=#{e}", level: :warning)
     rescue BrokenUrlError => e
-      Sidekiq.logger.warn("[UrlsProcessor][BrokenUrlError] url=#{url} error_message=#{e.message} error=#{e}")
+      Sentry.capture_message("[UrlsProcessor][BrokenUrlError] url=#{url} error_message=#{e.message} error=#{e}", level: :warning)
     rescue => e
-      Sidekiq.logger.warn("[UrlsProcessor][StandardError] url=#{url} error_message=#{e.message} error=#{e}")
+      Sentry.capture_message("[UrlsProcessor][StandardError] url=#{url} error_message=#{e.message} error=#{e}", level: :error)
     end
 
     private

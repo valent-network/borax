@@ -15,7 +15,7 @@ module AutoRia
       urls = paginate(first_response)
       ids = JSON.parse(first_response[:body])["result"]["search_result"]["ids"]
       UrlsPersister.new.call(ids)
-      Sidekiq.logger.warn("[IndexCrawler][Finished] urls=#{urls.to_json} ids=#{ids.to_json}")
+      Sentry.capture_message("[IndexCrawler][Finished] urls=#{urls.to_json} ids=#{ids.to_json}", level: :info)
       urls.each_with_index do |url, index|
         AutoRia::PageCrawler.perform_async(url, index)
       end
