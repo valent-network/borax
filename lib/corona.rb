@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-ENV['CORONA_ENV'] ||= 'development'
+ENV["CORONA_ENV"] ||= "development"
 
-require 'yaml'
-require 'erb'
-require 'rubygems'
-require 'bundler/setup'
-require 'zeitwerk'
-require 'logger'
-require 'dotenv'
-require 'active_support/all'
-require 'open-uri'
+require "yaml"
+require "erb"
+require "rubygems"
+require "bundler/setup"
+require "zeitwerk"
+require "logger"
+require "dotenv"
+require "active_support/all"
+require "open-uri"
 
 class Corona
   class << self
@@ -21,19 +21,19 @@ class Corona
     end
 
     def env
-      ENV['CORONA_ENV'].strip
+      ENV["CORONA_ENV"].strip
     end
 
     def development?
-      env == 'development'
+      env == "development"
     end
 
     def test?
-      env == 'test'
+      env == "test"
     end
 
     def production?
-      env == 'production'
+      env == "production"
     end
 
     def logger
@@ -41,7 +41,7 @@ class Corona
     end
 
     def root
-      File.expand_path('..', __dir__)
+      File.expand_path("..", __dir__)
     end
 
     def reload!

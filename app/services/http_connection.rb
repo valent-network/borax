@@ -1,8 +1,8 @@
 class HttpConnection
   REQUEST_HEADERS = {
-    'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
-    'Accept-Language' => 'en,ru-RU;q=0.8,ru;q=0.5,en-US;q=0.3',
-    'Cookie' => 'lang_id=2; lang_code=ru; lang_code=ru'
+    "User-Agent" => "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
+    "Accept-Language" => "en,ru-RU;q=0.8,ru;q=0.5,en-US;q=0.3",
+    "Cookie" => "lang_id=2; lang_code=ru; lang_code=ru"
   }.freeze
   REQUEST_OPTIONS = {}.freeze
   attr_reader :connection, :last_response
@@ -25,7 +25,7 @@ class HttpConnection
       body: last_response.body,
       json: begin
         JSON.parse(last_response.body)
-      rescue StandardError
+      rescue
         nil
       end
     }

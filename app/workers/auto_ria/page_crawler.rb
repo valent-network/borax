@@ -4,11 +4,11 @@ module AutoRia
   class PageCrawler
     include Sidekiq::Worker
 
-    sidekiq_options queue: 'provider', retry: true, backtrace: false
+    sidekiq_options queue: "provider", retry: true, backtrace: false
 
     def perform(url, index)
       page = HttpConnection.new.get(url)
-      ids = JSON.parse(page[:body])['result']['search_result']['ids']
+      ids = JSON.parse(page[:body])["result"]["search_result"]["ids"]
 
       UrlsPersister.new.call(ids)
 
