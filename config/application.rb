@@ -18,6 +18,6 @@ require_relative "initializers/redis"
 require_relative "initializers/sidekiq"
 
 module Urls
-  class Application # rubocop:disable Lint/EmptyClass
+  class Application
   end
 end
