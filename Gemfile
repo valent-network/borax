@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# ruby '3.2.0-preview2'
+ruby '3.2.0'
 
 gem 'activesupport', '~> 7'
 gem 'dotenv', '~> 2'
@@ -23,6 +23,4 @@ gem 'newrelic_rpm'
 group :development do
   gem 'byebug'
   gem 'foreman', require: false
-  gem 'rubocop', require: false
-  gem 'rubocop-performance', require: false
 end
