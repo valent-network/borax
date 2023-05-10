@@ -38,7 +38,7 @@ module AutoRia
       result[:fuel] = details["fuelType"] || fuel
       result[:engine_capacity] = engine_capacity ? (engine_capacity.to_f * 1000).to_i : nil
       result[:horse_powers] = hp ? hp.to_i : nil
-      result[:carcass] = details["bodyType"] || doc.search("#details dd").first.text.split("•").first&.strip
+      result[:carcass] = details["bodyType"] || doc.search("#details dd")&.first&.text&.split("•")&.first&.strip || doc.search("#description_v3 dd")&.first&.text&.split("•")&.first&.strip
       result[:carcass] = result[:carcass].to_s.gsub(/\d/, "").gsub(/мест(а)?/, "").gsub(/дверей/, "").gsub(/Пробег/, "").gsub(/тыс. км/, "").strip.presence
       result[:wheels] = doc.xpath("//dd[./span[text()='Привод']]/span[2]").try(:text).to_s.strip
       result[:color] = doc.search("#details").xpath(".//dd[./span[text()='Цвет']]/span[2]").try(:first).try(:text).to_s.strip.presence ||
