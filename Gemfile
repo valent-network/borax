@@ -18,7 +18,8 @@ gem "sidekiq", "~> 6"
 gem "sidekiq-unique-jobs", "~> 7"
 gem "zeitwerk", "~> 2"
 
-gem "newrelic_rpm"
+gem "sentry-ruby"
+gem "sentry-sidekiq"
 
 group :development do
   gem "byebug"

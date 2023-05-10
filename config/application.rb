@@ -15,6 +15,7 @@ rescue NameError
 end
 
 require_relative "initializers/redis"
+require_relative "initializers/sentry"
 require_relative "initializers/sidekiq"
 
 module Urls
